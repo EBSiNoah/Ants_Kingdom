@@ -4,26 +4,22 @@
 #include <map>
 using namespace std;
 
-//I want to push this
-
 int binary_insert(vector< vector<int> > input_vec, vector<int> push_vec)
 {
 	int sp=0;
-	int ep=0;
+	int ep=input_vec.size()-1;
 	int mid=0;
 	
 	while(sp<=ep)
 	{
-		sp=0;
-		ep=input_vec.size();
 		mid=(sp+ep)/2;
 		if(input_vec[mid][1]+input_vec[mid][2] > push_vec[1]+push_vec[2])
 		{
-			mid=ep-1;
+			ep=mid-1;
 		}
 		else if(input_vec[mid][1]+input_vec[mid][2] < push_vec[1]+push_vec[2])
 		{
-			mid=sp+1;
+			sp=mid+1;
 		}
 		else
 		{
@@ -103,8 +99,10 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			res_y=restore[idx+1];
 			next_current.push_back(res_x);
 			next_current.push_back(res_y);
-			//look for range in map size and not visited and visitable and not parent
-			if( ((res_x>=0&&res_x<input_map.size()) && (res_y>=0 && res_y<input_map[0].size())) && (info[next_current][0]!=1) && (input_map[res_x][res_y]!=1) && (info[current][5]!=res_x&&info[current][6]!=res_y) )
+			
+			//look for range in map size and and visitable
+			//look for already visited and is not parent : (info[next_current][0]!=1) && (info[current][5]!=res_x&&info[current][6]!=res_y)
+			if( ((res_x>=0&&res_x<input_map.size()) && (res_y>=0 && res_y<input_map[0].size())) && (input_map[res_x][res_y]!=1) && info[next_current].empty() )
 			{
 				col[0]=0;
 				col[1]=abs(sp_x-res_x) + abs(sp_y-res_y);
@@ -290,3 +288,20 @@ int main(void)
 		cout<<(*itr)<<", ";
 	}
 	cout<<endl;*/
+	
+/*	map< vector<int>, vector<int> > test;
+	vector<int> front;
+	vector<int> behind;
+	
+	front.push_back(1);
+	front.push_back(1);
+	
+	behind.push_back(2);
+	behind.push_back(2);
+	
+	if(test[front].empty())
+	{
+		test[front]=behind;
+	}
+	cout<<test[front][0]<<endl;*/
+	
