@@ -55,6 +55,9 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 	vector<int> restore;
 	vector<int> next_current;
 	map< vector<int>, vector<int> > info;
+	//comfirm
+	vector< vector<int> >::iterator row_itr;
+	vector<int>::iterator col_itr;
 	
 	while(idx<7)
 	{
@@ -79,7 +82,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 	current[1]=sp_y;
 	info[current]=col;
 	
-	while(current[0]!=ep_x && current[1]!=ep_y)//until arrive at goal
+	while(current[0]!=ep_x || current[1]!=ep_y)//until arrive at goal
 	{
 		restore.clear();
 		restore.push_back(current[0]+1);
@@ -116,6 +119,17 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 				neighbors.insert(neighbors.begin()+mid, col);
 			}
 			idx+=2;
+			//confirm
+			/*
+			for(row_itr=neighbors.begin();row_itr!=neighbors.end();row_itr++)
+			{
+				for(col_itr=(*row_itr).begin();col_itr!=(*row_itr).end();col_itr++)
+				{
+					cout<<(*col_itr)<<", ";
+				}
+				cout<<endl;
+			}
+			cout<<endl;*/
 		}
 		
 		//move current
@@ -130,9 +144,10 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			idx++;
 		}
 		h_cost=neighbors[idx][2];
+		next_node_idx=idx;
 		while(idx<neighbors.size() && neighbors[idx][1]+neighbors[idx][2]==f_cost)
 		{
-			if(neighbors[idx][2]<h_cost)
+			if(neighbors[idx][2]<h_cost && neighbors[idx][0]==0)
 			{
 				h_cost=neighbors[idx][2];
 				next_node_idx=idx;
@@ -142,12 +157,15 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 		
 		current[0]=neighbors[next_node_idx][3];
 		current[1]=neighbors[next_node_idx][4];
+		neighbors[next_node_idx][0]=1;
 		info[current][0]=1;
+		cout<<current[0]<<", "<<current[1]<<endl;
+		cout<<endl;
 	}
 	
 	//route
 	route.push_back(current);
-	while(current[0]!=sp_x && current[1]!=sp_y)
+	while(current[0]!=sp_x || current[1]!=sp_y)
 	{
 		res_x=info[current][5];
 		res_y=info[current][6];
