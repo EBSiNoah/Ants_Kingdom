@@ -48,6 +48,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 	int mid=0;
 	int f_cost=0;
 	int h_cost=0;
+	int nowayhome=1;
 	vector< vector<int> > neighbors;
 	vector< vector<int> > route;
 	vector<int> col;//visited, g_cost, h_cost, own coordinate, parent coordinate
@@ -159,8 +160,11 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 		current[1]=neighbors[next_node_idx][4];
 		neighbors[next_node_idx][0]=1;
 		info[current][0]=1;
-		cout<<current[0]<<", "<<current[1]<<endl;
-		cout<<endl;
+		nowayhome++;
+		if(nowayhome==neighbors.size())//no way arrive to goal
+		{
+			return route;
+		}
 	}
 	
 	//route
@@ -280,46 +284,3 @@ int main(void)
 	
 	return 0;
 }
-
-/*	map< vector<int>, vector<int> > test;
-	vector<int> front;
-	vector<int> behind;
-	vector<int>::iterator itr;
-	int idx=0;
-	int count=5;
-	
-	while(idx<3)
-	{
-		front.push_back(idx);
-		idx++;
-	}
-	while(count>0)
-	{
-		behind.push_back(count);
-		count--;
-	}
-	test[front]=behind;
-	behind[2]=7;
-	
-	for(itr=test[front].begin();itr!=test[front].end();itr++)
-	{
-		cout<<(*itr)<<", ";
-	}
-	cout<<endl;*/
-	
-/*	map< vector<int>, vector<int> > test;
-	vector<int> front;
-	vector<int> behind;
-	
-	front.push_back(1);
-	front.push_back(1);
-	
-	behind.push_back(2);
-	behind.push_back(2);
-	
-	if(test[front].empty())
-	{
-		test[front]=behind;
-	}
-	cout<<test[front][0]<<endl;*/
-	
