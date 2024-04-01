@@ -48,7 +48,6 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 	int mid=0;
 	int f_cost=0;
 	int h_cost=0;
-	int nowayhome=1;
 	vector< vector<int> > neighbors;
 	vector< vector<int> > route;
 	vector<int> col;//visited, g_cost, h_cost, own coordinate, parent coordinate
@@ -121,7 +120,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			}
 			idx+=2;
 			//confirm
-			/*
+			
 			for(row_itr=neighbors.begin();row_itr!=neighbors.end();row_itr++)
 			{
 				for(col_itr=(*row_itr).begin();col_itr!=(*row_itr).end();col_itr++)
@@ -130,7 +129,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 				}
 				cout<<endl;
 			}
-			cout<<endl;*/
+			cout<<endl;
 		}
 		
 		//move current
@@ -144,6 +143,12 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			}
 			idx++;
 		}
+		//no way arrive to goal
+		if(idx==neighbors.size())
+		{
+			return route;
+		}
+		
 		h_cost=neighbors[idx][2];
 		next_node_idx=idx;
 		while(idx<neighbors.size() && neighbors[idx][1]+neighbors[idx][2]==f_cost)
@@ -160,11 +165,6 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 		current[1]=neighbors[next_node_idx][4];
 		neighbors[next_node_idx][0]=1;
 		info[current][0]=1;
-		nowayhome++;
-		if(nowayhome==neighbors.size())//no way arrive to goal
-		{
-			return route;
-		}
 	}
 	
 	//route
@@ -196,14 +196,24 @@ vector< vector<int> > make_test_map()
 	vector<int> col_1;
 	vector<int> col_2;
 	vector<int> col_3;
+	vector<int> col_4;
 	
-	while(cnt<7)
+//	[[01000],[01010],[01000],[00010],[11110]]
+	
+	while(cnt<5)//11110
 	{
-		col_1.push_back(0);
+		if(cnt==4)
+		{
+			col_1.push_back(0);
+		}
+		else
+		{
+			col_1.push_back(1);		
+		}
 		cnt++;
 	}
 	cnt=0;
-	while(cnt<7)
+	while(cnt<5)//01000
 	{
 		if(cnt==1)
 		{
@@ -216,9 +226,9 @@ vector< vector<int> > make_test_map()
 		cnt++;
 	}
 	cnt=0;
-	while(cnt<7)
+	while(cnt<5)//01010
 	{
-		if(cnt>=1 && cnt<=5)
+		if(cnt%2)
 		{
 			col_3.push_back(1);
 		}
@@ -228,20 +238,37 @@ vector< vector<int> > make_test_map()
 		}
 		cnt++;
 	}
-	
-	while(idx<6)
+	cnt=0;
+	while(cnt<5)//00010
 	{
-		if(idx==1)
+		if(cnt==3)
 		{
-			output_map.push_back(col_2);
-		}
-		else if(idx==2)
-		{
-			output_map.push_back(col_3);
+			col_4.push_back(1);
 		}
 		else
 		{
+			col_4.push_back(0);
+		}
+		cnt++;
+	}
+	
+	while(idx<5)
+	{
+		if(idx==1)
+		{
+			output_map.push_back(col_3);
+		}
+		else if(idx==3)
+		{
+			output_map.push_back(col_4);
+		}
+		else if(idx==4)
+		{
 			output_map.push_back(col_1);
+		}
+		else
+		{
+			output_map.push_back(col_2);
 		}
 		idx++;
 	}
@@ -257,10 +284,10 @@ int main(void)
 	vector<int> coordinate;
 	
 	zerone_map=make_test_map();
+	coordinate.push_back(0);
+	coordinate.push_back(0);
 	coordinate.push_back(4);
-	coordinate.push_back(5);
-	coordinate.push_back(1);
-	coordinate.push_back(2);
+	coordinate.push_back(4);
 	
 	for(row_itr=zerone_map.begin();row_itr!=zerone_map.end();row_itr++)
 	{
