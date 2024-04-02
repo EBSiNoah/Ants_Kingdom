@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <map>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 int binary_insert(vector< vector<int> > input_vec, vector<int> push_vec)
@@ -272,9 +274,37 @@ vector< vector<int> > make_test_map()
 		}
 		idx++;
 	}
+	
 	return output_map;
 }
-
+/*
+vector< vector<int> > maze_generator()
+{
+	vector< vector<int> > maze;
+	vector<int> maze_col;
+	srand(time(nullptr));
+	int row_idx=rand()%20;
+	int col_idx=rand()%20;
+	int row_cnt=0;
+	int col_cnt=0;
+	
+	while(row_cnt<row_idx)
+	{
+		maze_col.clear();
+		col_cnt=0;
+		while(col_cnt<col_idx)
+		{
+			maze_col.push_back(rand()%2);
+			col_cnt++;
+		}
+		maze.push_back(maze_col);
+		row_cnt++;
+	}
+	maze[0][0]=0;
+	maze[row_idx-1][col_idx-1]=0;
+	return maze;
+}
+*/
 int main(void)
 {
 	vector< vector<int> > zerone_map;
@@ -284,10 +314,11 @@ int main(void)
 	vector<int> coordinate;
 	
 	zerone_map=make_test_map();
+//	zerone_map=maze_generator();
 	coordinate.push_back(0);
 	coordinate.push_back(0);
-	coordinate.push_back(4);
-	coordinate.push_back(4);
+	coordinate.push_back(zerone_map.size()-1);
+	coordinate.push_back(zerone_map[0].size()-1);
 	
 	for(row_itr=zerone_map.begin();row_itr!=zerone_map.end();row_itr++)
 	{
