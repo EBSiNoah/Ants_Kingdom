@@ -110,7 +110,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			if( ((res_x>=0&&res_x<input_map.size()) && (res_y>=0 && res_y<input_map[0].size())) && (input_map[res_x][res_y]!=1) && info[next_current].empty() )
 			{
 				col[0]=0;
-				col[1]=abs(sp_x-res_x) + abs(sp_y-res_y);
+				col[1]=info[current][1]+1;
 				col[2]=abs(ep_x-res_x) + abs(ep_y-res_y);
 				col[3]=res_x;
 				col[4]=res_y;
@@ -277,7 +277,7 @@ vector< vector<int> > make_test_map()
 	
 	return output_map;
 }
-/*
+
 vector< vector<int> > maze_generator()
 {
 	vector< vector<int> > maze;
@@ -304,7 +304,7 @@ vector< vector<int> > maze_generator()
 	maze[row_idx-1][col_idx-1]=0;
 	return maze;
 }
-*/
+
 int main(void)
 {
 	vector< vector<int> > zerone_map;
@@ -313,8 +313,8 @@ int main(void)
 	vector<int>::iterator col_itr;
 	vector<int> coordinate;
 	
-	zerone_map=make_test_map();
-//	zerone_map=maze_generator();
+//	zerone_map=make_test_map();
+	zerone_map=maze_generator();
 	coordinate.push_back(0);
 	coordinate.push_back(0);
 	coordinate.push_back(zerone_map.size()-1);
