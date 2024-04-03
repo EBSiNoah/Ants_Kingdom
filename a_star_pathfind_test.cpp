@@ -45,6 +45,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 	int ep_y=coordinate[3];
 	int idx=0;
 	int next_node_idx=0;
+	int change_value_idx=0;
 	int res_x=0;
 	int res_y=0;
 	int mid=0;
@@ -107,18 +108,36 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 			
 			//look for range in map size and and visitable
 			//look for already visited and is not parent : (info[next_current][0]!=1) && (info[current][5]!=res_x&&info[current][6]!=res_y)
-			if( ((res_x>=0&&res_x<input_map.size()) && (res_y>=0 && res_y<input_map[0].size())) && (input_map[res_x][res_y]!=1) && info[next_current].empty() )
+			if( ((res_x>=0&&res_x<input_map.size()) && (res_y>=0 && res_y<input_map[0].size())) && (input_map[res_x][res_y]!=1) )
 			{
-				col[0]=0;
-				col[1]=info[current][1]+1;
-				col[2]=abs(ep_x-res_x) + abs(ep_y-res_y);
-				col[3]=res_x;
-				col[4]=res_y;
-				col[5]=current[0];
-				col[6]=current[1];
-				info[next_current]=col;
-				mid=binary_insert(neighbors, col);
-				neighbors.insert(neighbors.begin()+mid, col);
+				if(info[next_current].empty())
+				{
+					col[0]=0;
+					col[1]=info[current][1]+1;
+					col[2]=abs(ep_x-res_x) + abs(ep_y-res_y);
+					col[3]=res_x;
+					col[4]=res_y;
+					col[5]=current[0];
+					col[6]=current[1];
+					info[next_current]=col;
+					mid=binary_insert(neighbors, col);
+					neighbors.insert(neighbors.begin()+mid, col);
+				}
+				else if( !info[next_current].empty() && info[next_current][1]>info[current][1]+1 )
+				{
+					//how can I find this location at neighbors?
+					change_value_idx=0;
+					while(neighbors[change_value_idx][3]!=res_x || neighbors[change_value_idx][4]!=res_y)
+					{
+						change_value_idx++;
+					}
+					neighbors.erase(neighbors.begin()+change_value_idx);
+					info[next_current][1]=info[current][1]+1;
+					info[next_current][5]=current[0];
+					info[next_current][6]=current[1];
+					mid=binary_insert(neighbors, info[next_current]);
+					neighbors.insert(neighbors.begin()+mid, info[next_current]);
+				}
 			}
 			idx+=2;
 			//confirm
