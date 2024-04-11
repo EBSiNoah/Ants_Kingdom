@@ -141,17 +141,6 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 				}
 			}
 			idx+=2;
-			//confirm
-			
-			for(row_itr=neighbors.begin();row_itr!=neighbors.end();row_itr++)
-			{
-				for(col_itr=(*row_itr).begin();col_itr!=(*row_itr).end();col_itr++)
-				{
-					cout<<(*col_itr)<<", ";
-				}
-				cout<<endl;
-			}
-			cout<<endl;
 		}
 		
 		//move current
@@ -197,7 +186,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 		res_y=info[current][6];
 		current[0]=res_x;
 		current[1]=res_y;
-		route.push_back(current);
+		route.insert(route.begin(), current);
 	}
 	
 	neighbors.clear();

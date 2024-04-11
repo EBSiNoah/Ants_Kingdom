@@ -39,4 +39,5 @@ Cell::Cell(int property_value)
 	property=property_value;
 	hunger=0;
 	rest=false;
+	move=false;
 }

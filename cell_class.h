@@ -9,6 +9,7 @@ class Cell
 		int hunger;//*5 days, 10 days*/
 		int health;//*100=queen, 20=male, 50=worker, 10<food<100*/
 		bool rest;
+		bool move;
 		Cell();//*initialize, means delete or clear*/
 		Cell(int property_value);
 };
