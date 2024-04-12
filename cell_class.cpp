@@ -34,10 +34,10 @@ Cell::Cell(int property_value)
 	else if(property_value==4)//food
 	{
 		life=0;
-		health=10+rand()%30;
+		health=10+rand()%90;
 	}
 	property=property_value;
 	hunger=0;
-	rest=false;
-	move=false;
+	travel_date=0;
+	rest=true;
 }

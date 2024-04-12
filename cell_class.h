@@ -8,8 +8,8 @@ class Cell
 		int life;//*queen=5~10years, male=180, worker=360*/
 		int hunger;//*5 days, 10 days*/
 		int health;//*100=queen, 20=male, 50=worker, 10<food<100*/
+		int travel_date;
 		bool rest;
-		bool move;
-		Cell();//*initialize, means delete or clear*/
+		Cell();
 		Cell(int property_value);
 };

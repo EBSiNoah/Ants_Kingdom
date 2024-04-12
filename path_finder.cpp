@@ -187,8 +187,9 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 		current[0]=res_x;
 		current[1]=res_y;
 		route.insert(route.begin(), current);
+//		cout<<res_x<<", "<<res_y<<endl;
 	}
-	
+//	cout<<endl;
 	neighbors.clear();
 	col.clear();
 	current.clear();

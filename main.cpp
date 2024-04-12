@@ -207,27 +207,20 @@ vector<int> where_to_go(vector< vector<int> > food_locates, vector< vector<int> 
 	}
 	if(food_idx==sorted_distance.size()||route.size()==0)
 	{
-		side_idx=0;
-		while(side_idx<arounds.size() && binary_kingdom[sp_x+arounds[side_idx]][sp_y+arounds[side_idx+1]]==1)
-		{
-			side_idx+=2;
-		}
-		if(side_idx==arounds.size())
-		{
-			go_here[0]=sp_x;
-			go_here[1]=sp_y;
-		}
-		else
-		{
-			go_here[0]=sp_x+arounds[side_idx];
-			go_here[1]=sp_y+arounds[side_idx+1];
-		}
+		go_here[0]=sp_x;
+		go_here[1]=sp_y;
 	}
 	else
 	{
 		go_here[0]=route[1][0];
 		go_here[1]=route[1][1];
 	}
+	
+	arounds.clear();
+	coordinate_restore.clear();
+	location.clear();
+	route.clear();
+	sorted_distance.clear();
 	
 	return go_here;
 }
@@ -386,6 +379,7 @@ int main()
 						kingdom[x_point][y_point]=Cell(0);
 						binary_kingdom[x_point][y_point]=0;
 						queen_ext=false;
+						count_obj--;
 					}
 					else//alive
 					{
@@ -414,6 +408,7 @@ int main()
 							{
 								kingdom[x_point+arounds[side_idx]][y_point+arounds[side_idx+1]]=Cell(0);
 								binary_kingdom[x_point+arounds[side_idx]][y_point+arounds[side_idx+1]]=0;
+								count_obj--;
 								food_idx=0;
 								food_coordinate[0]=x_point+arounds[side_idx];
 								food_coordinate[1]=y_point+arounds[side_idx+1];
@@ -421,7 +416,7 @@ int main()
 								{
 									food_idx++;
 								}
-								if(food_locates[food_idx]!=food_coordinate)
+								if(food_locates[food_idx]==food_coordinate)
 								{
 									food_locates.erase(food_locates.begin()+food_idx);
 								}
@@ -459,6 +454,7 @@ int main()
 					{
 						kingdom[x_point][y_point]=Cell(0);
 						binary_kingdom[x_point][y_point]=0;
+						count_obj--;
 					}
 					else//alive
 					{
@@ -479,30 +475,28 @@ int main()
 								side_idx+=2;
 							}
 							
-							if(side_idx==arounds.size())//no food near by so move
+							if(side_idx==arounds.size() && kingdom[x_point][y_point].travel_date!=date)//no food near by so move
 							{
+								kingdom[x_point][y_point].travel_date=date;
 								kingdom[x_point][y_point].hunger+=1;
 								restore_cell=kingdom[x_point][y_point];
 								//let's move
-								if(kingdom[x_point][y_point].move)
-								{
-									iam_here[0]=x_point;
-									iam_here[1]=y_point;
-									go_here=where_to_go(food_locates, binary_kingdom, iam_here);
-									kingdom[x_point][y_point]=Cell(0);
-									kingdom[go_here[0]][go_here[1]]=restore_cell;
-									binary_kingdom[x_point][y_point]=0;
-									binary_kingdom[go_here[0]][go_here[1]]=1;
-								}
-								else
-								{
-									kingdom[x_point][y_point].move=true;
-								}
+								iam_here[0]=x_point;
+								iam_here[1]=y_point;
+								go_here=where_to_go(food_locates, binary_kingdom, iam_here);
+								kingdom[x_point][y_point]=Cell(0);
+								kingdom[go_here[0]][go_here[1]]=restore_cell;
+//								cout<<x_point<<", "<<y_point<<" -> "<<go_here[0]<<", "<<go_here[1]<<endl;
+//								cout<<endl;
+								binary_kingdom[x_point][y_point]=0;
+								binary_kingdom[go_here[0]][go_here[1]]=1;
+								
 							}
 							else if(side_idx<arounds.size() && kingdom[x_point+arounds[side_idx]][y_point+arounds[side_idx+1]].health<=0)//food exist and clean plate
 							{
 								kingdom[x_point+arounds[side_idx]][y_point+arounds[side_idx+1]]=Cell(0);
 								binary_kingdom[x_point+arounds[side_idx]][y_point+arounds[side_idx+1]]=0;
+								count_obj--;
 								food_idx=0;
 								food_coordinate[0]=x_point+arounds[side_idx];
 								food_coordinate[1]=y_point+arounds[side_idx+1];
@@ -510,7 +504,7 @@ int main()
 								{
 									food_idx++;
 								}
-								if(food_locates[food_idx]!=food_coordinate)
+								if(food_locates[food_idx]==food_coordinate)
 								{
 									food_locates.erase(food_locates.begin()+food_idx);
 								}
@@ -548,8 +542,8 @@ int main()
 		
 		print_kingdom(kingdom);
 		cout<<endl;
-		print_binary_kingdom(binary_kingdom);
-		cout<<endl;
+//		print_binary_kingdom(binary_kingdom);
+//		cout<<endl;
 		sleep(1);
 		date++;
 	}
