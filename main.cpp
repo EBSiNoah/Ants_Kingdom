@@ -103,6 +103,8 @@ void print_kingdom(vector< vector<Cell> > kingdom, int date)
 		outfile<<endl;
 	}
 	outfile<<endl;
+	
+	outfile.close();
 }
 
 void print_binary_kingdom(vector< vector<int> > binary_kingdom)
