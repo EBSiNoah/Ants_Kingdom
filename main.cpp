@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <map>
 #include <cmath>
+#include <fstream>
 #include "cell_class.h"
 #include "path_finder.h"
 
@@ -50,10 +51,15 @@ vector< vector<int> > binary_kingdom_init(void)
 	return binary_kingdom;
 }
 
-void print_kingdom(vector< vector<Cell> > kingdom)
+void print_kingdom(vector< vector<Cell> > kingdom, int date)
 {
 	vector< vector<Cell> >::iterator row;
 	vector<Cell>::iterator col;
+	ofstream outfile;
+	outfile.open("Ants_Kingdom.txt", ios_base::app);
+	
+	outfile<<"date : "<<date<<endl;
+	outfile<<endl;
 	
 	for(row=kingdom.begin();row!=kingdom.end();row++)
 	{
@@ -63,24 +69,30 @@ void print_kingdom(vector< vector<Cell> > kingdom)
 			{
 				case 0:
 					cout<<"    |";
+					outfile<<"    |";
 					break;
 				case 1:
 					cout<<" aQ |";
+					outfile<<" aQ |";
 					break;
 				case 2:
 					cout<<" aM |";
+					outfile<<" aM |";
 					break;
 				case 3:
 					cout<<" aW |";
+					outfile<<" aW |";
 					break;
 				case 4:
 					if((*col).health<10)
 					{
 						cout<<" "<<(*col).health<<"  |";
+						outfile<<" "<<(*col).health<<"  |";
 					}
 					else
 					{
 						cout<<" "<<(*col).health<<" |";
+						outfile<<" "<<(*col).health<<" |";
 					}
 					break;
 				default:
@@ -88,7 +100,9 @@ void print_kingdom(vector< vector<Cell> > kingdom)
 			}
 		}
 		cout<<endl;
+		outfile<<endl;
 	}
+	outfile<<endl;
 }
 
 void print_binary_kingdom(vector< vector<int> > binary_kingdom)
@@ -540,7 +554,7 @@ int main()
 			x_point++;
 		}//end
 		
-		print_kingdom(kingdom);
+		print_kingdom(kingdom, date);
 		cout<<endl;
 //		print_binary_kingdom(binary_kingdom);
 //		cout<<endl;
