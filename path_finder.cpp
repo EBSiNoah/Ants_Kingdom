@@ -124,7 +124,7 @@ vector< vector<int> > A_star_pathfind(vector< vector<int> > input_map, vector<in
 					mid=binary_insert(neighbors, col);
 					neighbors.insert(neighbors.begin()+mid, col);
 				}
-				else if( !info[next_current].empty() && info[next_current][1]>info[current][1]+1 )
+				else if( !info[next_current].empty() && info[next_current][1]>info[current][1]+1 )//already visited and if neighbor's new fcost is smaller than old one
 				{
 					//how can I find this location at neighbors?
 					change_value_idx=0;
